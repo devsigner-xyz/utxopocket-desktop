@@ -128,6 +128,11 @@
                   </v-list-item>
                 </template>
               </v-tooltip>
+              <v-list-item link title="About" to="/about">
+                <template v-slot:prepend>
+                  <v-icon icon="info" />
+                </template>
+              </v-list-item>
             </v-list>
             <v-spacer />
             <v-list nav>

@@ -112,7 +112,7 @@
                                     v-bind="props" v-tooltip="getTooltipConfig(collectionButtonTooltipMessage, 'top')"
                                     class="cursor-pointer" :image="selectedUtxos[0].collectionAvatar" :size="48" />
                                 <v-btn v-else v-tooltip="getTooltipConfig(collectionButtonTooltipMessage, 'top')"
-                                    v-bind="props" variant="tonal" color="primary" icon="category" size="48"
+                                    v-bind="props" variant="tonal" icon="category" size="48"
                                     :color="selectedUtxos.length === 1 && hasSelectedUtxoWithCollection ? 'primary' : ''"
                                     :disabled="selectedUtxos.length !== 1" />
                             </template>
