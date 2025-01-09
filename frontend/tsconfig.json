@@ -1,0 +1,30 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"strict": true,
+		"jsx": "preserve",
+		"importHelpers": true,
+		"moduleResolution": "node",
+		"experimentalDecorators": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"lib": ["esnext", "dom"],
+		// "types": ["node"],
+		// "types": ["node", "@vue/runtime-core", "@vue/runtime-dom"],
+		"paths": {
+			"@assets/*": ["./src/assets/*"],
+			"@components/*": ["./src/components/*"],
+			"@plugins/*": ["./src/plugins/*"],
+			"@router/*": ["./src/router/*"],
+			"@stores/*": ["./src/stores/*"],
+			"@types/*": ["./src/types/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@views/*": ["./src/views/*"]
+		}
+	},
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "vite-env.d.ts"],
+	"exclude": ["node_modules"]
+}

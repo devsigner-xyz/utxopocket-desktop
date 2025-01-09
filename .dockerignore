@@ -1,0 +1,63 @@
+# Node.js
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+build/
+out/
+public/
+.vite/
+.esbuild/
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.docker
+
+# IDEs y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos del Sistema Operativo
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+*.pid
+*.seed
+
+# Archivos Temporales
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+
+# Coverage reports
+coverage/
+**/coverage/
+
+# Testing
+jest.config.js
+*.test.js
+*.spec.js
+
+# TypeScript
+*.tsbuildinfo
+
+# Otros Lock Files (Opcional)
+yarn.lock
+package-lock.json
+
+# Certificados y Claves
+*.pem
+*.crt
+*.key

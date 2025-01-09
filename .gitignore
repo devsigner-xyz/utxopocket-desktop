@@ -1,0 +1,53 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node modules and build directories
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+
+# Frontend specific
+frontend/node_modules
+frontend/dist
+frontend/dev-dist
+frontend/.yarn
+frontend/package-lock.json
+frontend/yarn.lock
+
+# Backend specific
+backend/go.sum
+backend/go.mod
+backend/node_modules
+backend/dist
+backend/dev-dist
+backend/.yarn
+backend/package-lock.json
+backend/yarn.lock
+
+# pnpm
+.pnp/
+.pnp.js
+.pnpm-debug.log*
+.pnpm-store
+.pnp.cjs

@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./frontend/src:/app/frontend/src
+      - ./frontend/public:/app/frontend/public
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_URL=http://backend:3000
+      - VITE_BASE_URL=/
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./backend/src:/app/backend/src
+    ports:
+      - '3000:3000'
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CORS_ORIGIN=http://localhost:5173
+      - BITCOIN_NETWORK=testnet
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'

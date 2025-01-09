@@ -1,0 +1,33 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+      args:
+        NODE_ENV: production
+    environment:
+      - VITE_API_URL=http://backend:3000
+      - VITE_BASE_URL=/
+    ports:
+      - '80:80'  # Map to port 80 for production
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+      args:
+        NODE_ENV: production
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CORS_ORIGIN=http://frontend:80
+      - BITCOIN_NETWORK=mainnet
+    ports:
+      - '3000:3000'
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
