@@ -39,7 +39,7 @@ The application is fully Dockerized for easy setup. Below is a guide to running 
    - Clone the repository:
 
         -   Run: `git clone https://github.com/strhodler/utxopocket-desktop.git`
-        -   Navigate to the directory: `cd utxo-pocket`
+        -   Navigate to the directory: `cd utxopocket-desktop`
 
    - Start the Application with Docker Compose
 
@@ -82,6 +82,7 @@ The application is fully Dockerized for easy setup. Below is a guide to running 
 - [frontend] Preview descriptor type when identified while adding wallet.
 - [frontend] Wallet Terminal feature.
 - [frontend] Rework styles.
+- [frontend, backend] miniscript
 - [frontend] Show utxo label in drawer if it has.
 - [frontend] Redirect user to wallet view after succesfully add a wallet (at least 1 utxo).
 - [frontend] Add and improve more stats.
