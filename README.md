@@ -110,3 +110,6 @@ The application is fully Dockerized for easy setup. Below is a guide to running 
   
 - **[Hack](https://github.com/source-foundry/Hack)** 
   Typeface, developed by Source Foundry and licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+Accepting sats:
+[strhodler@getalby.com](https://getalby.com/p/strhodler)
