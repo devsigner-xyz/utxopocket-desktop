@@ -21,11 +21,9 @@ export class DiscoveryService {
    * Creates an instance of DiscoveryService.
    *
    * @param nodeService Service responsible for managing node connections and interactions.
-   * @param utilsService Utility service for common operations, such as descriptor manipulation.
    */
   constructor(
     private readonly nodeService: NodeService,
-    private readonly utilsService: UtilsService,
   ) {}
 
   /**
@@ -85,11 +83,11 @@ export class DiscoveryService {
     this.discoveryInstances.set(descriptor, discoveryInstance);
 
     // Derive external and internal descriptors from the base descriptor
-    const externalDescriptor = this.utilsService.insertDerivationPath(
+    const externalDescriptor = UtilsService.insertDerivationPath(
       descriptor,
       '/0/*',
     );
-    const internalDescriptor = this.utilsService.insertDerivationPath(
+    const internalDescriptor = UtilsService.insertDerivationPath(
       descriptor,
       '/1/*',
     );

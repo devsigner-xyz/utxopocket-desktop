@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Buffer } from 'buffer';
 
-@Injectable()
-export class UtilsService {
+export abstract class UtilsService {
   /**
    * Inserts a derivation path into a descriptor.
    * @param descriptor - The descriptor string.
    * @param path - The derivation path to insert.
    * @returns The descriptor with the inserted derivation path.
    */
-  insertDerivationPath(descriptor: string, path: string): string {
+  static insertDerivationPath(descriptor: string, path: string): string {
     return descriptor.replace(/(\([^\(\)]+)\)$/, `$1${path})`);
   }
 
@@ -19,7 +18,7 @@ export class UtilsService {
    * @param offset - The offset to start reading from.
    * @returns An object with the number read and its size in bytes.
    */
-  readVarInt(buffer: Buffer, offset: number): { number: number; size: number } {
+  static readVarInt(buffer: Buffer, offset: number): { number: number; size: number } {
     const firstByte = buffer[offset];
     let number = 0;
     let size = 0;

@@ -38,7 +38,6 @@ export class DescriptorService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly nodeService: NodeService,
     private readonly discoveryService: DiscoveryService,
-    private readonly utils: UtilsService,
   ) {}
 
   /**
@@ -138,11 +137,11 @@ export class DescriptorService {
     internalDescriptor: string;
   } {
     return {
-      externalDescriptor: this.utils.insertDerivationPath(
+      externalDescriptor: UtilsService.insertDerivationPath(
         baseDescriptor,
         '/0/*',
       ),
-      internalDescriptor: this.utils.insertDerivationPath(
+      internalDescriptor: UtilsService.insertDerivationPath(
         baseDescriptor,
         '/1/*',
       ),

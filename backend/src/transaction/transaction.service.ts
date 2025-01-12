@@ -23,14 +23,12 @@ export class TransactionService {
    * @param nodeService Service responsible for managing node connections.
    * @param descriptorService Service responsible for descriptor operations.
    * @param discoveryService Service responsible for discovering wallet information.
-   * @param utils Utility service for common operations.
    * @param logger Service responsible for logging information and errors.
    */
   constructor(
     private readonly nodeService: NodeService,
     private readonly descriptorService: DescriptorService,
     private readonly discoveryService: DiscoveryService,
-    private readonly utils: UtilsService,
     private readonly logger: LogService,
   ) {}
 
@@ -326,7 +324,7 @@ export class TransactionService {
       }
 
       // Input count (varint)
-      const varintInput = this.utils.readVarInt(txBuffer, offset);
+      const varintInput = UtilsService.readVarInt(txBuffer, offset);
       const vinLen = varintInput.number;
       const vinBytesLen = varintInput.size;
       parts.push({
@@ -351,7 +349,7 @@ export class TransactionService {
         offset += 4;
 
         // Script Length (varint)
-        const scriptLengthVarint = this.utils.readVarInt(txBuffer, offset);
+        const scriptLengthVarint = UtilsService.readVarInt(txBuffer, offset);
         const scriptLength = scriptLengthVarint.number;
         const scriptLengthBytesLen = scriptLengthVarint.size;
         offset += scriptLengthBytesLen;
@@ -382,7 +380,7 @@ export class TransactionService {
       }
 
       // Output count (varint)
-      const varintOutput = this.utils.readVarInt(txBuffer, offset);
+      const varintOutput = UtilsService.readVarInt(txBuffer, offset);
       const voutLen = varintOutput.number;
       const voutBytesLen = varintOutput.size;
       parts.push({
@@ -405,7 +403,7 @@ export class TransactionService {
         offset += 8;
 
         // Script Length (varint)
-        const scriptLengthVarint = this.utils.readVarInt(txBuffer, offset);
+        const scriptLengthVarint = UtilsService.readVarInt(txBuffer, offset);
         const scriptLength = scriptLengthVarint.number;
         const scriptLengthBytesLen = scriptLengthVarint.size;
         offset += scriptLengthBytesLen;
