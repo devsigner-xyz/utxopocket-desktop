@@ -1,6 +1,6 @@
 import { IsString, IsInt, IsBoolean, IsIn } from 'class-validator';
 
-export class ConnectNodeDto {
+export class ConnectNodeRequestDto {
   @IsString()
   host: string;
 

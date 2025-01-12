@@ -8,6 +8,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { TransactionHistoryResponseDto } from './dto/transaction-history.response.dto';
 
 /**
  * Controller responsible for handling wallet transaction-related HTTP requests.
@@ -38,9 +40,13 @@ export class TransactionController {
    * @throws {HttpException} Throws an INTERNAL_SERVER_ERROR if there is an issue fetching the transaction history.
    */
   @Get('history')
+  @ApiOperation({ summary: 'Get transaction history for a wallet associated with a descriptor' })
+  @ApiParam({ name: 'descriptor', description: 'The wallet descriptor used to generate or retrieve the transaction history' })
+  @ApiResponse({ status: 200, type: TransactionHistoryResponseDto })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getTransactionHistory(
     @Query('descriptor') descriptor: string,
-  ): Promise<{ transactions: any[] }> {
+  ): Promise<TransactionHistoryResponseDto> {
     try {
       return await this.transactionService.getTransactionHistory(descriptor);
     } catch (error) {
@@ -65,6 +71,11 @@ export class TransactionController {
    * @throws {HttpException} Throws an INTERNAL_SERVER_ERROR if there is an issue fetching the transaction details.
    */
   @Post('transaction-details')
+  @ApiOperation({ summary: 'Get transaction details for a transaction associated with a descriptor' })
+  @ApiParam({ name: 'txid', description: 'The transaction ID of the transaction to retrieve details for' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getTransactionDetails(@Body('txid') txid: string): Promise<any> {
     if (!txid) {
       throw new HttpException(

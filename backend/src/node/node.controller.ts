@@ -7,7 +7,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { NodeService } from '@node/node.service';
-import { ConnectNodeDto } from '@node/dto/connect.dto';
+import { ConnectNodeRequestDto } from '@node/dto/connect.request.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ConnectResponseDto } from './dto/connect.response.dto';
+import { DisconnectResponseDto } from './dto/disconnect.response.dto';
 
 /**
  * Controller responsible for handling Electrum node connection-related HTTP requests.
@@ -45,9 +48,12 @@ export class NodeController {
    * @throws {HttpException} Throws an INTERNAL_SERVER_ERROR if the connection to the Electrum node fails.
    */
   @Post('connect')
+  @ApiOperation({ summary: 'Connect to an Electrum node' })
+  @ApiResponse({ status: 200, type: ConnectResponseDto })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async connectNode(
-    @Body() connectNodeDto: ConnectNodeDto,
-  ): Promise<{ message: string; node: string }> {
+    @Body() connectNodeDto: ConnectNodeRequestDto,
+  ): Promise<ConnectResponseDto> {
     this.logger.log(
       `Attempting to connect to Electrum server at ${connectNodeDto.host}:${connectNodeDto.port} using ${connectNodeDto.ssl ? 'SSL' : 'TCP'}`,
     );
@@ -86,7 +92,10 @@ export class NodeController {
    * @throws {HttpException} Throws an INTERNAL_SERVER_ERROR if the disconnection fails.
    */
   @Post('disconnect')
-  async disconnectNode(): Promise<{ message: string }> {
+  @ApiOperation({ summary: 'Disconnect from the currently connected Electrum node' })
+  @ApiResponse({ status: 200, type: DisconnectResponseDto })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  async disconnectNode(): Promise<DisconnectResponseDto> {
     try {
       return await this.nodeService.disconnectNode();
     } catch (error) {

@@ -74,7 +74,7 @@ The application is fully Dockerized for easy setup. Below is a guide to running 
      - Click "Add wallet" and wait until you see utxos, transactions and addesses numbers going up.
      - Explore the app and give feedback via GitHub Issues.
   
-   - **Backend:** If you need to access the backend endpoints directly, use [http://localhost:3000](http://localhost:3000).
+   - **Backend:** Please, see the API docs at [http://localhost:3000/api/docs](http://localhost:3000/api/docs).
 
 
 ## @TODO

@@ -9,6 +9,8 @@ import {
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { WalletService } from '@wallet/wallet.service';
 import { UTXO } from '@common/interfaces/types';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { WalletResponseDto } from './dto/wallet.response.dto';
 
 /**
  * Controller responsible for handling wallet-related HTTP requests.
@@ -41,13 +43,12 @@ export class WalletController {
    */
   @UseInterceptors(CacheInterceptor)
   @Get('info')
-  async getWalletInfo(@Query('descriptor') descriptor: string): Promise<{
-    balance: number;
-    utxos: UTXO[];
-    transactions: any[];
-    externalAddresses: string[];
-    internalAddresses: string[];
-  }> {
+  @ApiOperation({ summary: 'Get wallet information' })
+  @ApiParam({ name: 'descriptor', description: 'The wallet descriptor used to generate or retrieve wallet information' })
+  @ApiResponse({ status: 200, type: WalletResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  async getWalletInfo(@Query('descriptor') descriptor: string): Promise<WalletResponseDto> {
     if (!descriptor) {
       throw new HttpException('Descriptor is required', HttpStatus.BAD_REQUEST);
     }

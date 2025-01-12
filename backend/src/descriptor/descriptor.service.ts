@@ -5,6 +5,7 @@ import { Network } from 'bitcoinjs-lib';
 import { NodeService } from '@node/node.service';
 import { DiscoveryService } from '@discovery/discovery.service';
 import { UtilsService } from '@common/utils/utils.service';
+import { DescriptorType } from './enum/descryptor-type.enum';
 
 /**
  * Service responsible for managing wallet descriptors.
@@ -17,12 +18,13 @@ export class DescriptorService {
    * Defines valid descriptor patterns and their corresponding types.
    */
   private readonly validPatterns = [
-    { regex: /^pk\(/, type: 'Pay-to-PubKey (P2PK)' },
-    { regex: /^pkh\(/, type: 'Pay-to-PubKey-Hash (P2PKH)' },
-    { regex: /^wpkh\(/, type: 'Pay-to-Witness-PubKey-Hash (P2WPKH)' },
+    { regex: /^pk\(/, type: DescriptorType.PK, name: 'Pay-to-PubKey (P2PK)' },
+    { regex: /^pkh\(/, type: DescriptorType.PKH, name: 'Pay-to-PubKey-Hash (P2PKH)' },
+    { regex: /^wpkh\(/, type: DescriptorType.WPKH, name: 'Pay-to-Witness-PubKey-Hash (P2WPKH)' },
     {
       regex: /^sh\(wpkh\(/,
-      type: 'Pay-to-Script-Hash SegWit (P2SH-P2WPKH)',
+      type: DescriptorType.SH_WPKH,
+      name: 'Pay-to-Script-Hash SegWit (P2SH-P2WPKH)',
     },
   ];
 
@@ -32,7 +34,6 @@ export class DescriptorService {
    * @param cacheManager Cache manager for storing and retrieving cached data.
    * @param nodeService Service responsible for managing node connections.
    * @param discoveryService Service responsible for discovering wallet information.
-   * @param utils Utility service for common operations.
    */
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -84,7 +85,7 @@ export class DescriptorService {
     const found = this.validPatterns.find((pattern) =>
       pattern.regex.test(descriptor),
     );
-    return found ? found.type : 'Unsupported descriptor type';
+    return found ? found.name : 'Unsupported descriptor type';
   }
 
   /**

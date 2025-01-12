@@ -7,6 +7,12 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { DescriptorService } from './descriptor.service';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { LoadWalletResponseDto } from './dto/load-wallet.response.dto';
+import { LoadWalletRequestDto } from './dto/load-wallet.request.dto';
+import { SupportedDescriptorTypesResponseDto } from './dto/supported-descriptor-types.response.dto';
+import { DescriptorType } from './enum/descryptor-type.enum';
+import { ValidateDescriptorResponseDto } from './dto/validate-descriptor.response.dto';
 
 /**
  * Controller responsible for managing wallet descriptor operations.
@@ -33,14 +39,16 @@ export class DescriptorController {
    * @throws {HttpException} Throws an error if the wallet loading operation fails.
    */
   @Post('load')
+  @ApiOperation({ summary: 'Load a wallet associated with a descriptor' })
+  @ApiResponse({ status: 200, type: LoadWalletResponseDto })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async loadWallet(
-    @Body('descriptor') descriptor: string,
-    @Body('gapLimit') gapLimit?: number,
-  ): Promise<{ message: string }> {
+    @Body() loadWalletRequestDto: LoadWalletRequestDto,
+  ): Promise<LoadWalletResponseDto> {
     try {
       const result = await this.descriptorService.loadWallet(
-        descriptor,
-        gapLimit,
+        loadWalletRequestDto.descriptor,
+        loadWalletRequestDto.gapLimit,
       );
       return { message: 'Wallet loaded successfully.' };
     } catch (error) {
@@ -57,9 +65,11 @@ export class DescriptorController {
    * @returns An object containing an array of supported descriptor types.
    */
   @Get('types')
+  @ApiOperation({ summary: 'Get the list of supported descriptor types' })
+  @ApiResponse({ status: 200, type: SupportedDescriptorTypesResponseDto })
   getSupportedDescriptorTypes() {
     return {
-      supportedTypes: ['pk()', 'pkh()', 'wpkh()', 'sh(wpkh())'],
+      supportedTypes: [DescriptorType.PK, DescriptorType.PKH, DescriptorType.WPKH, DescriptorType.SH_WPKH],
     };
   }
 
@@ -73,6 +83,9 @@ export class DescriptorController {
    * @returns An object indicating whether the descriptor is valid and its type if valid.
    */
   @Post('validate')
+  @ApiOperation({ summary: 'Validate a wallet descriptor' })
+  @ApiResponse({ status: 200, type: ValidateDescriptorResponseDto })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async validateDescriptor(@Body('descriptor') descriptor: string) {
     const validation =
       await this.descriptorService.validateDescriptor(descriptor);
