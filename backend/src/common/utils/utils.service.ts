@@ -18,7 +18,10 @@ export abstract class UtilsService {
    * @param offset - The offset to start reading from.
    * @returns An object with the number read and its size in bytes.
    */
-  static readVarInt(buffer: Buffer, offset: number): { number: number; size: number } {
+  static readVarInt(
+    buffer: Buffer,
+    offset: number,
+  ): { number: number; size: number } {
     const firstByte = buffer[offset];
     let number = 0;
     let size = 0;

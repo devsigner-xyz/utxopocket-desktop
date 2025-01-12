@@ -13,6 +13,7 @@ import { LoadWalletRequestDto } from './dto/load-wallet.request.dto';
 import { SupportedDescriptorTypesResponseDto } from './dto/supported-descriptor-types.response.dto';
 import { DescriptorType } from './enum/descryptor-type.enum';
 import { ValidateDescriptorResponseDto } from './dto/validate-descriptor.response.dto';
+import { Descriptor } from './descriptor.value-object';
 
 /**
  * Controller responsible for managing wallet descriptor operations.
@@ -69,7 +70,12 @@ export class DescriptorController {
   @ApiResponse({ status: 200, type: SupportedDescriptorTypesResponseDto })
   getSupportedDescriptorTypes() {
     return {
-      supportedTypes: [DescriptorType.PK, DescriptorType.PKH, DescriptorType.WPKH, DescriptorType.SH_WPKH],
+      supportedTypes: [
+        DescriptorType.PK,
+        DescriptorType.PKH,
+        DescriptorType.WPKH,
+        DescriptorType.SH_WPKH,
+      ],
     };
   }
 
@@ -86,19 +92,19 @@ export class DescriptorController {
   @ApiOperation({ summary: 'Validate a wallet descriptor' })
   @ApiResponse({ status: 200, type: ValidateDescriptorResponseDto })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async validateDescriptor(@Body('descriptor') descriptor: string) {
-    const validation =
-      await this.descriptorService.validateDescriptor(descriptor);
-    if (!validation.isValid) {
+  async validateDescriptor(@Body('descriptor') baseDescriptor: string) {
+    try {
+      const descriptor = Descriptor.create(baseDescriptor);
+      const descriptorType = descriptor.type;
+      return {
+        isValid: true,
+        type: descriptorType,
+      };
+    } catch (error) {
       return {
         isValid: false,
-        error: validation.error,
+        error: error.message,
       };
     }
-    const descriptorType = this.descriptorService.getDescriptorType(descriptor);
-    return {
-      isValid: true,
-      type: descriptorType,
-    };
   }
 }

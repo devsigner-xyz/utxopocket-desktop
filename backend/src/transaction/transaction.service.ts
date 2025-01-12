@@ -7,6 +7,7 @@ import { DiscoveryService } from '@discovery/discovery.service';
 import { LogService } from '@common/log/log.service';
 import { TransactionPart } from '@common/interfaces/types';
 import { UtilsService } from '@common/utils/utils.service';
+import { Descriptor } from '@descriptor/descriptor.value-object';
 
 /**
  * Service responsible for managing wallet transactions.
@@ -54,18 +55,13 @@ export class TransactionService {
     await this.nodeService.ensureElectrumConnection();
     const network = this.nodeService.getNetwork();
 
-    // Validate the provided descriptor
-    const { isValid, error } =
-      await this.descriptorService.validateDescriptor(baseDescriptor);
-    if (!isValid) {
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
-    }
+    const descriptor = Descriptor.create(baseDescriptor);
 
     // Obtain the discovery instance for the provided descriptor
     const discovery =
-      await this.discoveryService.getDiscoveryInstance(baseDescriptor);
+      await this.discoveryService.getDiscoveryInstance(descriptor);
     const { externalDescriptor, internalDescriptor } =
-      this.descriptorService.deriveDescriptors(baseDescriptor);
+      descriptor.deriveDescriptors();
 
     // Fetch the transaction history using the discovery instance
     const history = discovery.getHistory(
@@ -164,7 +160,7 @@ export class TransactionService {
       await this.discoveryService.getDiscoveryInstance(storedDescriptor);
 
     const { externalDescriptor, internalDescriptor } =
-      this.descriptorService.deriveDescriptors(storedDescriptor);
+      storedDescriptor.deriveDescriptors();
 
     // Fetch the transaction history using the discovery instance
     const history = discovery.getHistory(

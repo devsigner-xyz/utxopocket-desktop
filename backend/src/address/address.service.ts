@@ -4,6 +4,7 @@ import { DescriptorsFactory } from '@bitcoinerlab/descriptors';
 import { NodeService } from '@node/node.service';
 import { DescriptorService } from '@descriptor/descriptor.service';
 import { DiscoveryService } from '@discovery/discovery.service';
+import { Descriptor } from '@descriptor/descriptor.value-object';
 
 const { Output } = DescriptorsFactory(secp256k1);
 
@@ -46,14 +47,15 @@ export class AddressService {
     await this.nodeService.ensureElectrumConnection();
     const network = this.nodeService.getNetwork();
 
+    const descriptor = Descriptor.create(baseDescriptor);
     try {
       // Obtain the discovery instance for the provided descriptor
       const discovery =
-        await this.discoveryService.getDiscoveryInstance(baseDescriptor);
+        await this.discoveryService.getDiscoveryInstance(descriptor);
 
       // Derive external and internal descriptors from the base descriptor
       const { externalDescriptor, internalDescriptor } =
-        this.descriptorService.deriveDescriptors(baseDescriptor);
+        descriptor.deriveDescriptors();
 
       // Determine the next index for external descriptors
       const externalNextIndex = discovery.getNextIndex({

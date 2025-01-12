@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DiscoveryFactory, DiscoveryInstance } from '@bitcoinerlab/discovery';
 import { NodeService } from '@node/node.service';
-import { UtilsService } from '@common/utils/utils.service';
+import { Descriptor } from '@descriptor/descriptor.value-object';
 
 /**
  * Service responsible for managing wallet discovery instances.
@@ -22,9 +22,7 @@ export class DiscoveryService {
    *
    * @param nodeService Service responsible for managing node connections and interactions.
    */
-  constructor(
-    private readonly nodeService: NodeService,
-  ) {}
+  constructor(private readonly nodeService: NodeService) {}
 
   /**
    * Retrieves an existing discovery instance for a given wallet descriptor.
@@ -37,12 +35,14 @@ export class DiscoveryService {
    *
    * @throws {Error} Throws an error if no discovery instance is found for the descriptor.
    */
-  async getDiscoveryInstance(descriptor: string): Promise<DiscoveryInstance> {
-    if (this.discoveryInstances.has(descriptor)) {
-      return this.discoveryInstances.get(descriptor)!;
+  async getDiscoveryInstance(
+    descriptor: Descriptor,
+  ): Promise<DiscoveryInstance> {
+    if (this.discoveryInstances.has(descriptor.value)) {
+      return this.discoveryInstances.get(descriptor.value)!;
     } else {
       throw new Error(
-        `Discovery instance not found for descriptor: ${descriptor}`,
+        `Discovery instance not found for descriptor: ${descriptor.value}`,
       );
     }
   }
@@ -64,7 +64,7 @@ export class DiscoveryService {
    *                 during the creation of the discovery instance.
    */
   async createDiscoveryInstance(
-    descriptor: string,
+    descriptor: Descriptor,
     gapLimit: number = 100,
   ): Promise<{ message: string }> {
     // Ensure a connection to the Electrum node is established
@@ -73,24 +73,17 @@ export class DiscoveryService {
     const network = this.nodeService.getNetwork();
 
     // Check if a discovery instance for the descriptor already exists
-    if (this.discoveryInstances.has(descriptor)) {
+    if (this.discoveryInstances.has(descriptor.value)) {
       return { message: 'Descriptor already loaded.' };
     }
 
     // Create a new discovery instance using the DiscoveryFactory
     const { Discovery } = DiscoveryFactory(electrumExplorer, network);
     const discoveryInstance = new Discovery();
-    this.discoveryInstances.set(descriptor, discoveryInstance);
 
-    // Derive external and internal descriptors from the base descriptor
-    const externalDescriptor = UtilsService.insertDerivationPath(
-      descriptor,
-      '/0/*',
-    );
-    const internalDescriptor = UtilsService.insertDerivationPath(
-      descriptor,
-      '/1/*',
-    );
+    this.discoveryInstances.set(descriptor.value, discoveryInstance);
+    const { externalDescriptor, internalDescriptor } =
+      descriptor.deriveDescriptors();
 
     // Fetch the discovery data using the derived descriptors and gap limit
     await discoveryInstance.fetch({
