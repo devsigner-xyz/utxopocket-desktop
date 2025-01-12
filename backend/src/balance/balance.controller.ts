@@ -28,7 +28,9 @@ export class BalanceController {
    * @throws {Error} Throws an error if the balance retrieval operation fails.
    */
   @Get('balance')
-  @ApiOperation({ summary: 'Get the balance of a wallet associated with a descriptor' })
+  @ApiOperation({
+    summary: 'Get the balance of a wallet associated with a descriptor',
+  })
   @ApiResponse({ status: 200, type: BalanceResponseDto })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getBalance(

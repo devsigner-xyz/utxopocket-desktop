@@ -28,7 +28,10 @@ export class AddressController {
    * @throws {Error} Throws an error if the address retrieval operation fails.
    */
   @Get('addresses')
-  @ApiOperation({ summary: 'Get the external and internal addresses associated with a descriptor' })
+  @ApiOperation({
+    summary:
+      'Get the external and internal addresses associated with a descriptor',
+  })
   @ApiResponse({ status: 200, type: AddressesResponseDto })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getAddresses(

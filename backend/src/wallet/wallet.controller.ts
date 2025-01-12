@@ -44,11 +44,17 @@ export class WalletController {
   @UseInterceptors(CacheInterceptor)
   @Get('info')
   @ApiOperation({ summary: 'Get wallet information' })
-  @ApiParam({ name: 'descriptor', description: 'The wallet descriptor used to generate or retrieve wallet information' })
+  @ApiParam({
+    name: 'descriptor',
+    description:
+      'The wallet descriptor used to generate or retrieve wallet information',
+  })
   @ApiResponse({ status: 200, type: WalletResponseDto })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async getWalletInfo(@Query('descriptor') descriptor: string): Promise<WalletResponseDto> {
+  async getWalletInfo(
+    @Query('descriptor') descriptor: string,
+  ): Promise<WalletResponseDto> {
     if (!descriptor) {
       throw new HttpException('Descriptor is required', HttpStatus.BAD_REQUEST);
     }

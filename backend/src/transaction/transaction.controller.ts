@@ -40,8 +40,15 @@ export class TransactionController {
    * @throws {HttpException} Throws an INTERNAL_SERVER_ERROR if there is an issue fetching the transaction history.
    */
   @Get('history')
-  @ApiOperation({ summary: 'Get transaction history for a wallet associated with a descriptor' })
-  @ApiParam({ name: 'descriptor', description: 'The wallet descriptor used to generate or retrieve the transaction history' })
+  @ApiOperation({
+    summary:
+      'Get transaction history for a wallet associated with a descriptor',
+  })
+  @ApiParam({
+    name: 'descriptor',
+    description:
+      'The wallet descriptor used to generate or retrieve the transaction history',
+  })
   @ApiResponse({ status: 200, type: TransactionHistoryResponseDto })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getTransactionHistory(
@@ -71,8 +78,15 @@ export class TransactionController {
    * @throws {HttpException} Throws an INTERNAL_SERVER_ERROR if there is an issue fetching the transaction details.
    */
   @Post('transaction-details')
-  @ApiOperation({ summary: 'Get transaction details for a transaction associated with a descriptor' })
-  @ApiParam({ name: 'txid', description: 'The transaction ID of the transaction to retrieve details for' })
+  @ApiOperation({
+    summary:
+      'Get transaction details for a transaction associated with a descriptor',
+  })
+  @ApiParam({
+    name: 'txid',
+    description:
+      'The transaction ID of the transaction to retrieve details for',
+  })
   @ApiResponse({ status: 200 })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })

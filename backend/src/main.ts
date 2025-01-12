@@ -47,9 +47,9 @@ async function bootstrap(): Promise<void> {
 
 function setupSwagger(app: INestApplication) {
   const config = new DocumentBuilder()
-  .setTitle('UTXO Pocket')
-  .setVersion('1.0.0')
-  .build();
+    .setTitle('UTXO Pocket API')
+    .setVersion('1.0.0')
+    .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, documentFactory);
 }

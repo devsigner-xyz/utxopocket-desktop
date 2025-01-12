@@ -92,7 +92,9 @@ export class NodeController {
    * @throws {HttpException} Throws an INTERNAL_SERVER_ERROR if the disconnection fails.
    */
   @Post('disconnect')
-  @ApiOperation({ summary: 'Disconnect from the currently connected Electrum node' })
+  @ApiOperation({
+    summary: 'Disconnect from the currently connected Electrum node',
+  })
   @ApiResponse({ status: 200, type: DisconnectResponseDto })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async disconnectNode(): Promise<DisconnectResponseDto> {

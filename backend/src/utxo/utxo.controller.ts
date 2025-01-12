@@ -38,8 +38,13 @@ export class UtxoController {
    * @throws {HttpException} Throws an INTERNAL_SERVER_ERROR if there is an issue fetching the UTXOs.
    */
   @Get('utxos')
-  @ApiOperation({ summary: 'Get UTXOs for a wallet associated with a descriptor' })
-  @ApiParam({ name: 'descriptor', description: 'The wallet descriptor used to generate or retrieve UTXOs' })
+  @ApiOperation({
+    summary: 'Get UTXOs for a wallet associated with a descriptor',
+  })
+  @ApiParam({
+    name: 'descriptor',
+    description: 'The wallet descriptor used to generate or retrieve UTXOs',
+  })
   @ApiResponse({ status: 200, type: UtxoResponseDto })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getUtxos(
