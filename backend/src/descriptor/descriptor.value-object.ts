@@ -1,14 +1,13 @@
 import { compileMiniscript } from '@bitcoinerlab/miniscript';
 import { DescriptorType } from './enum/descryptor-type.enum';
 import { UnsupportedDescriptorException } from './exception/unsupported-descriptor.exception';
-import { InvalidDescriptorException } from './exception/invalid-descriptor.exception';
-import { UtilsService } from '@common/utils/utils.service';
+import { InvalidDescriptorException } from './exception/invalid-descriptor.exception';import { UtilsService } from '@common/utils/utils.service';
 
 export class Descriptor {
-  /**
-   * Defines valid descriptor patterns and their corresponding types.
-   */
-  private readonly validPatterns = [
+  readonly name: string;
+  readonly type: DescriptorType;
+
+  private readonly validTypes = [
     { regex: /^pk\(/, type: DescriptorType.PK, name: 'Pay-to-PubKey (P2PK)' },
     {
       regex: /^pkh\(/,
@@ -33,22 +32,17 @@ export class Descriptor {
       compileMiniscript(value);
 
       // Check if the descriptor matches any of the supported patterns
-      const isValid = this.validPatterns.some((pattern) =>
+      const { type, name } = this.validTypes.find((pattern) =>
         pattern.regex.test(value),
       );
-      if (!isValid) {
+      if (!type) {
         throw new UnsupportedDescriptorException(value);
       }
+      this.type = type;
+      this.name = name;
     } catch (err) {
       throw new InvalidDescriptorException(value);
     }
-  }
-
-  get type(): string {
-    const found = this.validPatterns.find((pattern) =>
-      pattern.regex.test(this.value),
-    );
-    return found.name;
   }
 
   static create(descriptor: string): Descriptor {
