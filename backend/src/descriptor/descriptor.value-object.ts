@@ -27,22 +27,21 @@ export class Descriptor {
   ];
 
   private constructor(readonly value: string) {
-    try {
-      // Compile the descriptor to ensure it's syntactically correct
-      compileMiniscript(value);
-
-      // Check if the descriptor matches any of the supported patterns
-      const { type, name } = this.validTypes.find((pattern) =>
-        pattern.regex.test(value),
-      );
-      if (!type) {
-        throw new UnsupportedDescriptorException(value);
-      }
-      this.type = type;
-      this.name = name;
-    } catch (err) {
+    // Compile the descriptor to ensure it's syntactically correct
+    const { issane } = compileMiniscript(value);
+    if (!issane) {
       throw new InvalidDescriptorException(value);
     }
+    
+    // Check if the descriptor matches any of the supported patterns
+    const foundType = this.validTypes.find((pattern) =>
+      pattern.regex.test(value),
+    );
+    if (!foundType) {
+      throw new UnsupportedDescriptorException(value);
+    }
+    this.type = foundType.type;
+    this.name = foundType.name;
   }
 
   static create(descriptor: string): Descriptor {
