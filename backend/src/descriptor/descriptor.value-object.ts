@@ -1,7 +1,8 @@
 import { compileMiniscript } from '@bitcoinerlab/miniscript';
 import { DescriptorType } from './enum/descryptor-type.enum';
 import { UnsupportedDescriptorException } from './exception/unsupported-descriptor.exception';
-import { InvalidDescriptorException } from './exception/invalid-descriptor.exception';import { UtilsService } from '@common/utils/utils.service';
+import { InvalidDescriptorException } from './exception/invalid-descriptor.exception';
+import { UtilsService } from '@common/utils/utils.service';
 
 export class Descriptor {
   readonly name: string;
@@ -32,7 +33,7 @@ export class Descriptor {
     if (!issane) {
       throw new InvalidDescriptorException(value);
     }
-    
+
     // Check if the descriptor matches any of the supported patterns
     const foundType = this.validTypes.find((pattern) =>
       pattern.regex.test(value),

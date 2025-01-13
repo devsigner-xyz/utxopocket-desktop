@@ -94,14 +94,18 @@ export class DescriptorController {
   @ApiOperation({ summary: 'Validate a wallet descriptor' })
   @ApiResponse({ status: 200, type: ValidateDescriptorResponseDto })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async validateDescriptor(@Body() ValidateDescriptorRequestDto: ValidateDescriptorRequestDto) {
+  async validateDescriptor(
+    @Body() ValidateDescriptorRequestDto: ValidateDescriptorRequestDto,
+  ) {
     try {
-      const descriptor = Descriptor.create(ValidateDescriptorRequestDto.descriptor);
+      const descriptor = Descriptor.create(
+        ValidateDescriptorRequestDto.descriptor,
+      );
       const { name, type } = descriptor;
       return {
         isValid: true,
         type,
-        name
+        name,
       };
     } catch (error) {
       return {

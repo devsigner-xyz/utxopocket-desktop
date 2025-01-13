@@ -1,7 +1,11 @@
 import { Controller, Sse } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { BlockService } from './block.service';
-import { ApiExcludeController, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiExcludeController,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 /**
  * Controller responsible for handling block-related HTTP requests and Server-Sent Events (SSE).

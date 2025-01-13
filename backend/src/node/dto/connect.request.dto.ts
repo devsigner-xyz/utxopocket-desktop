@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Network } from '@node/enum/network.enum';
-import { IsString, IsInt, IsBoolean, IsIn, IsEnum, isEnum } from 'class-validator';
+import {
+  IsString,
+  IsInt,
+  IsBoolean,
+  IsIn,
+  IsEnum,
+  isEnum,
+} from 'class-validator';
 
 export class ConnectNodeRequestDto {
   @ApiProperty()

@@ -1,6 +1,6 @@
-import { Descriptor } from "./descriptor.value-object";
-import { InvalidDescriptorException } from "./exception/invalid-descriptor.exception";
-import { UnsupportedDescriptorException } from "./exception/unsupported-descriptor.exception";
+import { Descriptor } from './descriptor.value-object';
+import { InvalidDescriptorException } from './exception/invalid-descriptor.exception';
+import { UnsupportedDescriptorException } from './exception/unsupported-descriptor.exception';
 
 describe('Descriptor', () => {
   it('should throw InvalidDescriptorException when descriptor is invalid', () => {
@@ -8,7 +8,9 @@ describe('Descriptor', () => {
   });
 
   it('should throw UnsupportedDescriptorException when descriptor is unsupported', () => {
-    expect(() => Descriptor.create('and_v(v:pk(1),after(10))')).toThrow(UnsupportedDescriptorException);
+    expect(() => Descriptor.create('and_v(v:pk(1),after(10))')).toThrow(
+      UnsupportedDescriptorException,
+    );
   });
 
   it('should create a valid descriptor', () => {
@@ -23,8 +25,8 @@ describe('Descriptor', () => {
     const validDescriptor = 'pk(A)';
     const descriptor = Descriptor.create(validDescriptor);
     expect(descriptor.deriveDescriptors()).toEqual({
-      externalDescriptor: "pk(A/0/*)",
-      internalDescriptor: "pk(A/1/*)",
+      externalDescriptor: 'pk(A/0/*)',
+      internalDescriptor: 'pk(A/1/*)',
     });
   });
 });
