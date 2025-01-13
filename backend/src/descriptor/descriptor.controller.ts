@@ -7,13 +7,14 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { DescriptorService } from './descriptor.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoadWalletResponseDto } from './dto/load-wallet.response.dto';
 import { LoadWalletRequestDto } from './dto/load-wallet.request.dto';
 import { SupportedDescriptorTypesResponseDto } from './dto/supported-descriptor-types.response.dto';
 import { DescriptorType } from './enum/descryptor-type.enum';
 import { ValidateDescriptorResponseDto } from './dto/validate-descriptor.response.dto';
 import { Descriptor } from './descriptor.value-object';
+import { ValidateDescriptorRequestDto } from './dto/validate-descriptor.request.dto';
 
 /**
  * Controller responsible for managing wallet descriptor operations.
@@ -89,16 +90,18 @@ export class DescriptorController {
    * @returns An object indicating whether the descriptor is valid and its type if valid.
    */
   @Post('validate')
+  @ApiBody({ type: ValidateDescriptorRequestDto })
   @ApiOperation({ summary: 'Validate a wallet descriptor' })
   @ApiResponse({ status: 200, type: ValidateDescriptorResponseDto })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async validateDescriptor(@Body('descriptor') baseDescriptor: string) {
+  async validateDescriptor(@Body() ValidateDescriptorRequestDto: ValidateDescriptorRequestDto) {
     try {
-      const descriptor = Descriptor.create(baseDescriptor);
-      const descriptorType = descriptor.type;
+      const descriptor = Descriptor.create(ValidateDescriptorRequestDto.descriptor);
+      const { name, type } = descriptor;
       return {
         isValid: true,
-        type: descriptorType,
+        type,
+        name
       };
     } catch (error) {
       return {
