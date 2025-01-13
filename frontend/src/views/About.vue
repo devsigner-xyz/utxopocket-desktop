@@ -126,6 +126,41 @@
                 </ul>
             </v-col>
         </v-row>
+
+        <v-row>
+            <v-col cols="12">
+                <h6 class="text-h6">Contributors</h6>
+            </v-col>
+            <v-col>
+
+                <v-list>
+                    <v-list-item link title="@devsigner-xyz">
+                        <template v-slot:prepend>
+                            <GitHubIcon size="32px" class="mr-4" style="fill: white" />
+                        </template>
+                        <template v-slot:subtitle>
+                            <a href="https://github.com/devsigner-xyz"
+                                target="_blank">https://github.com/devsigner-xyz</a>
+                        </template>
+                        <template v-slot:append>
+                            Creator
+                        </template>
+                    </v-list-item>
+                    <v-list-item link title="@sergiogragera">
+                        <template v-slot:prepend>
+                            <GitHubIcon size="32px" class="mr-4" style="fill: white" />
+                        </template>
+                        <template v-slot:subtitle>
+                            <a href="https://github.com/sergiogragera"
+                                target="_blank">https://github.com/sergiogragera</a>
+                        </template>
+                        <template v-slot:append>
+                            Contributor
+                        </template>
+                    </v-list-item>
+                </v-list>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
