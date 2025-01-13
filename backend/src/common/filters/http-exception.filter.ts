@@ -1,3 +1,5 @@
+import { InvalidDescriptorException } from '@descriptor/exception/invalid-descriptor.exception';
+import { UnsupportedDescriptorException } from '@descriptor/exception/unsupported-descriptor.exception';
 import {
   ExceptionFilter,
   Catch,
@@ -12,6 +14,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
+
+    if (exception instanceof InvalidDescriptorException) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: exception.message,
+      });
+    }
+
+    if (exception instanceof UnsupportedDescriptorException) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: exception.message,
+      });
+    }
 
     const status =
       exception instanceof HttpException

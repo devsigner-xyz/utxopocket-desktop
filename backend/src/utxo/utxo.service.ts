@@ -6,6 +6,7 @@ import { DescriptorService } from '@descriptor/descriptor.service';
 import { DiscoveryService } from '@discovery/discovery.service';
 import { AddressService } from '@address/address.service';
 import { UTXO } from '@common/interfaces/types';
+import { Descriptor } from '@descriptor/descriptor.value-object';
 
 /**
  * Service responsible for managing Unspent Transaction Outputs (UTXOs).
@@ -50,22 +51,16 @@ export class UtxoService {
     await this.nodeService.ensureElectrumConnection();
 
     const network = this.nodeService.getNetwork();
-
-    // Validate the provided descriptor
-    const { isValid, error } =
-      await this.descriptorService.validateDescriptor(baseDescriptor);
-    if (!isValid) {
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
-    }
+    const descriptor = Descriptor.create(baseDescriptor);
 
     // Obtain the discovery instance for the provided descriptor
     const discovery =
-      await this.discoveryService.getDiscoveryInstance(baseDescriptor);
+      await this.discoveryService.getDiscoveryInstance(descriptor);
     const { externalDescriptor, internalDescriptor } =
-      this.descriptorService.deriveDescriptors(baseDescriptor);
+      descriptor.deriveDescriptors();
 
     // Fetch the UTXOs using the discovery instance
-    const utxosSet = await discovery.getUtxos({
+    const utxosSet = discovery.getUtxos({
       descriptors: [externalDescriptor, internalDescriptor],
     });
 

@@ -2,6 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { NodeService } from '@node/node.service';
 import { DescriptorService } from '@descriptor/descriptor.service';
 import { DiscoveryService } from '@discovery/discovery.service';
+import { Descriptor } from '@descriptor/descriptor.value-object';
 
 /**
  * Service responsible for managing wallet balance operations.
@@ -40,20 +41,15 @@ export class BalanceService {
     // Ensure a connection to the Electrum node is established
     await this.nodeService.ensureElectrumConnection();
 
-    // Validate the provided descriptor
-    const { isValid, error } =
-      await this.descriptorService.validateDescriptor(baseDescriptor);
-    if (!isValid) {
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
-    }
+    const descriptor = Descriptor.create(baseDescriptor);
 
     // Obtain the discovery instance for the provided descriptor
     const discovery =
-      await this.discoveryService.getDiscoveryInstance(baseDescriptor);
+      await this.discoveryService.getDiscoveryInstance(descriptor);
 
     // Derive external and internal descriptors from the base descriptor
     const { externalDescriptor, internalDescriptor } =
-      this.descriptorService.deriveDescriptors(baseDescriptor);
+      descriptor.deriveDescriptors();
 
     // Calculate the total balance using the derived descriptors
     const balance = discovery.getBalance({

@@ -7,6 +7,7 @@ import { DiscoveryService } from '@discovery/discovery.service';
 import { LogService } from '@common/log/log.service';
 import { TransactionPart } from '@common/interfaces/types';
 import { UtilsService } from '@common/utils/utils.service';
+import { Descriptor } from '@descriptor/descriptor.value-object';
 
 /**
  * Service responsible for managing wallet transactions.
@@ -23,14 +24,12 @@ export class TransactionService {
    * @param nodeService Service responsible for managing node connections.
    * @param descriptorService Service responsible for descriptor operations.
    * @param discoveryService Service responsible for discovering wallet information.
-   * @param utils Utility service for common operations.
    * @param logger Service responsible for logging information and errors.
    */
   constructor(
     private readonly nodeService: NodeService,
     private readonly descriptorService: DescriptorService,
     private readonly discoveryService: DiscoveryService,
-    private readonly utils: UtilsService,
     private readonly logger: LogService,
   ) {}
 
@@ -56,18 +55,13 @@ export class TransactionService {
     await this.nodeService.ensureElectrumConnection();
     const network = this.nodeService.getNetwork();
 
-    // Validate the provided descriptor
-    const { isValid, error } =
-      await this.descriptorService.validateDescriptor(baseDescriptor);
-    if (!isValid) {
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
-    }
+    const descriptor = Descriptor.create(baseDescriptor);
 
     // Obtain the discovery instance for the provided descriptor
     const discovery =
-      await this.discoveryService.getDiscoveryInstance(baseDescriptor);
+      await this.discoveryService.getDiscoveryInstance(descriptor);
     const { externalDescriptor, internalDescriptor } =
-      this.descriptorService.deriveDescriptors(baseDescriptor);
+      descriptor.deriveDescriptors();
 
     // Fetch the transaction history using the discovery instance
     const history = discovery.getHistory(
@@ -166,7 +160,7 @@ export class TransactionService {
       await this.discoveryService.getDiscoveryInstance(storedDescriptor);
 
     const { externalDescriptor, internalDescriptor } =
-      this.descriptorService.deriveDescriptors(storedDescriptor);
+      storedDescriptor.deriveDescriptors();
 
     // Fetch the transaction history using the discovery instance
     const history = discovery.getHistory(
@@ -326,7 +320,7 @@ export class TransactionService {
       }
 
       // Input count (varint)
-      const varintInput = this.utils.readVarInt(txBuffer, offset);
+      const varintInput = UtilsService.readVarInt(txBuffer, offset);
       const vinLen = varintInput.number;
       const vinBytesLen = varintInput.size;
       parts.push({
@@ -351,7 +345,7 @@ export class TransactionService {
         offset += 4;
 
         // Script Length (varint)
-        const scriptLengthVarint = this.utils.readVarInt(txBuffer, offset);
+        const scriptLengthVarint = UtilsService.readVarInt(txBuffer, offset);
         const scriptLength = scriptLengthVarint.number;
         const scriptLengthBytesLen = scriptLengthVarint.size;
         offset += scriptLengthBytesLen;
@@ -382,7 +376,7 @@ export class TransactionService {
       }
 
       // Output count (varint)
-      const varintOutput = this.utils.readVarInt(txBuffer, offset);
+      const varintOutput = UtilsService.readVarInt(txBuffer, offset);
       const voutLen = varintOutput.number;
       const voutBytesLen = varintOutput.size;
       parts.push({
@@ -405,7 +399,7 @@ export class TransactionService {
         offset += 8;
 
         // Script Length (varint)
-        const scriptLengthVarint = this.utils.readVarInt(txBuffer, offset);
+        const scriptLengthVarint = UtilsService.readVarInt(txBuffer, offset);
         const scriptLength = scriptLengthVarint.number;
         const scriptLengthBytesLen = scriptLengthVarint.size;
         offset += scriptLengthBytesLen;

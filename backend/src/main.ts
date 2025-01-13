@@ -2,9 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as compression from 'compression';
-import { ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from '@common/filters/http-exception.filter';
 import 'tsconfig-paths/register';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 /**
  * Bootstraps the NestJS application.
@@ -37,10 +38,20 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new AllExceptionsFilter());
   app.use(compression());
   app.useGlobalPipes(new ValidationPipe());
+  setupSwagger(app);
 
   const port = configService.get<number>('PORT') || 3000;
   await app.listen(port, '0.0.0.0');
   console.log(`Application is running on: ${await app.getUrl()}`);
+}
+
+function setupSwagger(app: INestApplication) {
+  const config = new DocumentBuilder()
+    .setTitle('UTXO Pocket API')
+    .setVersion('1.0.0')
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, documentFactory);
 }
 
 bootstrap();
