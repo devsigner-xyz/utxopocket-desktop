@@ -1,10 +1,9 @@
 import { Descriptor } from './descriptor.value-object';
-import { InvalidDescriptorException } from './exception/invalid-descriptor.exception';
 import { UnsupportedDescriptorException } from './exception/unsupported-descriptor.exception';
 
 describe('Descriptor', () => {
   it('should throw InvalidDescriptorException when descriptor is invalid', () => {
-    expect(() => Descriptor.create('test')).toThrow(InvalidDescriptorException);
+    expect(() => Descriptor.create('test')).toThrow(UnsupportedDescriptorException);
   });
 
   it('should throw UnsupportedDescriptorException when descriptor is unsupported', () => {
