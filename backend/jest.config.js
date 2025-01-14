@@ -11,6 +11,10 @@ module.exports = {
   coverageDirectory: '../coverage',
   moduleNameMapper: {
     '^@common/(.*)$': '<rootDir>/common/$1',
-    '^@src/(.*)$': '<rootDir>/$1'
+    '^@src/(.*)$': '<rootDir>/$1',
+    '^@node/(.*)$': '<rootDir>/node/$1',
+    '^@descriptor/(.*)$': '<rootDir>/descriptor/$1',
+    '^@electrum/(.*)$': '<rootDir>/electrum/$1',
+    '^@discovery/(.*)$': '<rootDir>/discovery/$1',
   }
 };
