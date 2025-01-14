@@ -20,13 +20,11 @@ export class UtxoService {
    * Creates an instance of UtxoService.
    *
    * @param nodeService Service responsible for managing node connections.
-   * @param descriptorService Service responsible for descriptor operations.
    * @param discoveryService Service responsible for discovering wallet information.
    * @param addressService Service responsible for managing address derivations.
    */
   constructor(
     private readonly nodeService: NodeService,
-    private readonly descriptorService: DescriptorService,
     private readonly discoveryService: DiscoveryService,
     private readonly addressService: AddressService,
   ) {}

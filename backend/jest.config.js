@@ -16,5 +16,9 @@ module.exports = {
     '^@descriptor/(.*)$': '<rootDir>/descriptor/$1',
     '^@electrum/(.*)$': '<rootDir>/electrum/$1',
     '^@discovery/(.*)$': '<rootDir>/discovery/$1',
+    '^@transaction/(.*)$': '<rootDir>/transaction/$1',
+    '^@balance/(.*)$': '<rootDir>/balance/$1',
+    '^@utxo/(.*)$': '<rootDir>/utxo/$1',
+    '^@address/(.*)$': '<rootDir>/address/$1',
   }
 };
