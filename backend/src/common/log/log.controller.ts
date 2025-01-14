@@ -2,7 +2,9 @@ import { Controller, Sse } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LogService } from '@common/log/log.service';
+import { ApiExcludeController, ApiExcludeEndpoint } from '@nestjs/swagger';
 
+@ApiExcludeController()
 @Controller('logs')
 export class LogsController {
   constructor(private readonly logger: LogService) {}

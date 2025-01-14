@@ -9,5 +9,8 @@ export class ValidateDescriptorResponseDto {
   type?: string;
 
   @ApiProperty({ required: false })
+  name?: string;
+
+  @ApiProperty({ required: false })
   error?: string;
 }
