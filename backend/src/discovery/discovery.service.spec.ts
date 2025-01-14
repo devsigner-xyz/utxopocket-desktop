@@ -17,7 +17,10 @@ class MockDiscoveryService extends DiscoveryService {
     super(nodeService);
   }
 
-  setDiscoveryInstance(descriptor: Descriptor, discoveryInstance: MockProxy<DiscoveryInstance>) {
+  setDiscoveryInstance(
+    descriptor: Descriptor,
+    discoveryInstance: MockProxy<DiscoveryInstance>,
+  ) {
     this.discoveryInstances.set(descriptor.value, discoveryInstance);
   }
 
@@ -38,15 +41,19 @@ describe('DiscoveryService', () => {
   describe('getDiscoveryInstance', () => {
     it('should throw error when descriptor is not found', async () => {
       const descriptor = Descriptor.create('pk(A)');
-      await expect(discoveryService.getDiscoveryInstance(descriptor))
-        .rejects.toThrow(`Discovery instance not found for descriptor: ${descriptor.value}`);
+      await expect(
+        discoveryService.getDiscoveryInstance(descriptor),
+      ).rejects.toThrow(
+        `Discovery instance not found for descriptor: ${descriptor.value}`,
+      );
     });
 
     it('should return discovery instance when descriptor is found', async () => {
       const descriptor = Descriptor.create('wpkh(A)');
       const mockDiscoveryInstance = mock<DiscoveryInstance>();
       discoveryService.setDiscoveryInstance(descriptor, mockDiscoveryInstance);
-      const discoveryInstance = await discoveryService.getDiscoveryInstance(descriptor);
+      const discoveryInstance =
+        await discoveryService.getDiscoveryInstance(descriptor);
       expect(discoveryInstance).toEqual(mockDiscoveryInstance);
     });
   });
@@ -56,14 +63,20 @@ describe('DiscoveryService', () => {
       const descriptor = Descriptor.create('wpkh(A)');
       const mockDiscoveryInstance = mock<DiscoveryInstance>();
       discoveryService.setDiscoveryInstance(descriptor, mockDiscoveryInstance);
-      const discoveryInstance = await discoveryService.createDiscoveryInstance(descriptor);
-      expect(discoveryInstance).toEqual({ message: 'Descriptor already loaded.' });
+      const discoveryInstance =
+        await discoveryService.createDiscoveryInstance(descriptor);
+      expect(discoveryInstance).toEqual({
+        message: 'Descriptor already loaded.',
+      });
     });
 
     it('should create a discovery instance', async () => {
       const descriptor = Descriptor.create('wpkh(A)');
-      const discoveryInstance = await discoveryService.createDiscoveryInstance(descriptor);
-      expect(discoveryInstance).toEqual({ message: 'Descriptor loaded successfully.' });
+      const discoveryInstance =
+        await discoveryService.createDiscoveryInstance(descriptor);
+      expect(discoveryInstance).toEqual({
+        message: 'Descriptor loaded successfully.',
+      });
     });
   });
 
@@ -87,4 +100,3 @@ describe('DiscoveryService', () => {
     });
   });
 });
-

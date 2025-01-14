@@ -3,7 +3,9 @@ import { UnsupportedDescriptorException } from './exception/unsupported-descript
 
 describe('Descriptor', () => {
   it('should throw InvalidDescriptorException when descriptor is invalid', () => {
-    expect(() => Descriptor.create('test')).toThrow(UnsupportedDescriptorException);
+    expect(() => Descriptor.create('test')).toThrow(
+      UnsupportedDescriptorException,
+    );
   });
 
   it('should throw UnsupportedDescriptorException when descriptor is unsupported', () => {

@@ -15,7 +15,11 @@ describe('DescriptorService', () => {
     cacheManager = mock<Cache>();
     nodeService = mock<NodeService>();
     discoveryService = mock<DiscoveryService>();
-    descriptorService = new DescriptorService(cacheManager, nodeService, discoveryService);
+    descriptorService = new DescriptorService(
+      cacheManager,
+      nodeService,
+      discoveryService,
+    );
   });
 
   describe('getNetwork', () => {
@@ -29,7 +33,7 @@ describe('DescriptorService', () => {
         },
         pubKeyHash: 0x6f,
         scriptHash: 0,
-        wif: 0
+        wif: 0,
       };
 
       nodeService.getNetwork.mockReturnValue(mockNetwork);
@@ -55,10 +59,15 @@ describe('DescriptorService', () => {
 
   describe('loadDescriptor', () => {
     it('should load the wallet with gap and return the discovery instance', async () => {
-      discoveryService.createDiscoveryInstance.mockResolvedValue({ message: 'test' });
+      discoveryService.createDiscoveryInstance.mockResolvedValue({
+        message: 'test',
+      });
       const result = await descriptorService.loadWallet('pk(A)', 200);
       expect(nodeService.ensureElectrumConnection).toHaveBeenCalled();
-      expect(cacheManager.set).toHaveBeenCalledWith('walletDescriptor', 'pk(A)');
+      expect(cacheManager.set).toHaveBeenCalledWith(
+        'walletDescriptor',
+        'pk(A)',
+      );
       expect(result).toEqual({ message: 'test' });
       expect(discoveryService.createDiscoveryInstance).toHaveBeenCalledWith(
         Descriptor.create('pk(A)'),
@@ -67,10 +76,15 @@ describe('DescriptorService', () => {
     });
 
     it('should load the wallet and return the discovery instance', async () => {
-      discoveryService.createDiscoveryInstance.mockResolvedValue({ message: 'test' });
+      discoveryService.createDiscoveryInstance.mockResolvedValue({
+        message: 'test',
+      });
       const result = await descriptorService.loadWallet('pk(A)');
       expect(nodeService.ensureElectrumConnection).toHaveBeenCalled();
-      expect(cacheManager.set).toHaveBeenCalledWith('walletDescriptor', 'pk(A)');
+      expect(cacheManager.set).toHaveBeenCalledWith(
+        'walletDescriptor',
+        'pk(A)',
+      );
       expect(result).toEqual({ message: 'test' });
       expect(discoveryService.createDiscoveryInstance).toHaveBeenCalledWith(
         Descriptor.create('pk(A)'),
@@ -79,4 +93,3 @@ describe('DescriptorService', () => {
     });
   });
 });
-
