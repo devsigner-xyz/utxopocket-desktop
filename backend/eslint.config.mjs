@@ -40,8 +40,8 @@ export default [
       sourceType: 'module',
 
       parserOptions: {
-        project: 'tsconfig.json',
-        tsconfigRootDir: '/workspaces/utxopocket-desktop/backend',
+        project: './tsconfig.json',
+        tsconfigRootDir: __dirname,
       },
     },
 

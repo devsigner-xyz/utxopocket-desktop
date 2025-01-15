@@ -6,10 +6,6 @@ import { DiscoveryService } from '@discovery/discovery.service';
 import { Descriptor } from '@descriptor/descriptor.value-object';
 import mock, { MockProxy } from 'jest-mock-extended/lib/Mock';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { DescriptorsFactory } from '@bitcoinerlab/descriptors';
-import * as secp256k1 from '@bitcoinerlab/secp256k1';
-
-const { Output } = DescriptorsFactory(secp256k1);
 
 describe('AddressService', () => {
   let addressService: AddressService;
@@ -58,11 +54,6 @@ describe('AddressService', () => {
       discoveryService.getDiscoveryInstance.mockResolvedValue(
         discoveryMock as any,
       );
-
-      const derivedExternal =
-        descriptorVO.deriveDescriptors().externalDescriptor;
-      const derivedInternal =
-        descriptorVO.deriveDescriptors().internalDescriptor;
 
       const result = await addressService.getAddresses(descriptorString);
 
@@ -120,7 +111,6 @@ describe('AddressService', () => {
 
       const descriptorString =
         'wpkh(tpubDDgQXbX4Q3WVcn3gMQAXP5w5NutmdgMKLukSLyDfD88PNpZr4MbgewQP1oDCMhWaVpbPAHF1RHusPBKuzo1TV2aUbTdhhTs5PmrEzSAUV9e/0/*)';
-      const descriptorVO = Descriptor.create(descriptorString);
 
       const discoveryMock = {
         getNextIndex: jest
