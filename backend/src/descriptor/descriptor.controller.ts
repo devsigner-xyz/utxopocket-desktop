@@ -15,6 +15,7 @@ import { DescriptorType } from './enum/descryptor-type.enum';
 import { ValidateDescriptorResponseDto } from './dto/validate-descriptor.response.dto';
 import { Descriptor } from './descriptor.value-object';
 import { ValidateDescriptorRequestDto } from './dto/validate-descriptor.request.dto';
+import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';
 
 /**
  * Controller responsible for managing wallet descriptor operations.
@@ -43,6 +44,7 @@ export class DescriptorController {
   @Post('load')
   @ApiOperation({ summary: 'Load a wallet associated with a descriptor' })
   @ApiResponse({ status: 200, type: LoadWalletResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async loadWallet(
     @Body() loadWalletRequestDto: LoadWalletRequestDto,
@@ -90,17 +92,13 @@ export class DescriptorController {
    * @returns An object indicating whether the descriptor is valid and its type if valid.
    */
   @Post('validate')
-  @ApiBody({ type: ValidateDescriptorRequestDto })
   @ApiOperation({ summary: 'Validate a wallet descriptor' })
   @ApiResponse({ status: 200, type: ValidateDescriptorResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async validateDescriptor(
-    @Body() ValidateDescriptorRequestDto: ValidateDescriptorRequestDto,
-  ) {
+  async validateDescriptor(@Body() descriptorRequestDto: DescriptorRequestDto) {
     try {
-      const descriptor = Descriptor.create(
-        ValidateDescriptorRequestDto.descriptor,
-      );
+      const descriptor = Descriptor.create(descriptorRequestDto.descriptor);
       const { name, type } = descriptor;
       return {
         isValid: true,

@@ -20,5 +20,6 @@ module.exports = {
     '^@balance/(.*)$': '<rootDir>/balance/$1',
     '^@utxo/(.*)$': '<rootDir>/utxo/$1',
     '^@address/(.*)$': '<rootDir>/address/$1',
+    '^@wallet/(.*)$': '<rootDir>/wallet/$1',
   }
 };

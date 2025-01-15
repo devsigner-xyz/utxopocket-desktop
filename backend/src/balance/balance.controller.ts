@@ -2,6 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { BalanceService } from '@balance/balance.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BalanceResponseDto } from './dto/balance.response.dto';
+import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';
 
 /**
  * Controller responsible for handling wallet balance-related HTTP requests.
@@ -32,12 +33,15 @@ export class BalanceController {
     summary: 'Get the balance of a wallet associated with a descriptor',
   })
   @ApiResponse({ status: 200, type: BalanceResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getBalance(
-    @Query('descriptor') descriptor: string,
+    @Query() descriptorRequestDto: DescriptorRequestDto,
   ): Promise<BalanceResponseDto> {
     try {
-      return await this.balanceService.getBalance(descriptor);
+      return await this.balanceService.getBalance(
+        descriptorRequestDto.descriptor,
+      );
     } catch (error) {
       throw error;
     }
