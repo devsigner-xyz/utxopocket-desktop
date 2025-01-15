@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TxAttribution } from '@bitcoinerlab/discovery';
 import { Transaction, address } from 'bitcoinjs-lib';
 import { NodeService } from '@node/node.service';

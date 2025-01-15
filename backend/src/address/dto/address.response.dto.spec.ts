@@ -1,4 +1,4 @@
-import { AddressesResponseDto } from "./address.response.dto";
+import { AddressesResponseDto } from './address.response.dto';
 
 describe('AddressesResponseDto', () => {
   it('should initialize with external and internal addresses', () => {

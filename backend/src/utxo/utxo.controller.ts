@@ -6,7 +6,6 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { UtxoService } from './utxo.service';
-import { UTXO } from '@common/interfaces/types';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { UtxoResponseDto } from './dto/utxo.response.dto';
 import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';

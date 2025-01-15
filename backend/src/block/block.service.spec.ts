@@ -129,9 +129,7 @@ describe('BlockService', () => {
         fetchBlockStatus: jest.fn().mockResolvedValue({}),
         fetchTx: jest.fn(),
         client: {
-          request: jest.fn().mockResolvedValue(
-            '00'.repeat(160),
-          ),
+          request: jest.fn().mockResolvedValue('00'.repeat(160)),
         },
       };
 

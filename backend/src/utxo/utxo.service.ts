@@ -1,8 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Transaction, address } from 'bitcoinjs-lib';
 import { TxAttribution } from '@bitcoinerlab/discovery';
 import { NodeService } from '@node/node.service';
-import { DescriptorService } from '@descriptor/descriptor.service';
 import { DiscoveryService } from '@discovery/discovery.service';
 import { AddressService } from '@address/address.service';
 import { UTXO } from '@common/interfaces/types';
