@@ -9,6 +9,7 @@ import { UtxoService } from './utxo.service';
 import { UTXO } from '@common/interfaces/types';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { UtxoResponseDto } from './dto/utxo.response.dto';
+import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';
 
 /**
  * Controller responsible for handling Unspent Transaction Outputs (UTXO)-related HTTP requests.
@@ -46,12 +47,13 @@ export class UtxoController {
     description: 'The wallet descriptor used to generate or retrieve UTXOs',
   })
   @ApiResponse({ status: 200, type: UtxoResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getUtxos(
-    @Query('descriptor') descriptor: string,
+    @Query() descriptorRequestDto: DescriptorRequestDto,
   ): Promise<UtxoResponseDto> {
     try {
-      return await this.utxoService.getUtxos(descriptor);
+      return await this.utxoService.getUtxos(descriptorRequestDto.descriptor);
     } catch (error) {
       throw new HttpException(
         error.message || 'Failed to retrieve UTXOs',

@@ -1,11 +1,16 @@
 import { Controller, Sse } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { BlockService } from './block.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiExcludeController,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 /**
  * Controller responsible for handling block-related HTTP requests and Server-Sent Events (SSE).
  */
+@ApiExcludeController()
 @Controller('block')
 export class BlockController {
   /**
@@ -26,9 +31,6 @@ export class BlockController {
    * @throws {Error} Throws an error if the block polling operation fails.
    */
   @Sse('block-updates')
-  @ApiOperation({ summary: 'Subscribe to real-time block updates' })
-  @ApiResponse({ status: 200 })
-  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   blockUpdates(): Observable<{ data: any }> {
     return new Observable((subscriber) => {
       // Subscribe to the block polling Observable from BlockService

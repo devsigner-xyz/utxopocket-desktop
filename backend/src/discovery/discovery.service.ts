@@ -15,7 +15,7 @@ export class DiscoveryService {
   /**
    * A map storing discovery instances keyed by their respective wallet descriptors.
    */
-  private discoveryInstances: Map<string, DiscoveryInstance> = new Map();
+  protected discoveryInstances: Map<string, DiscoveryInstance> = new Map();
 
   /**
    * Creates an instance of DiscoveryService.

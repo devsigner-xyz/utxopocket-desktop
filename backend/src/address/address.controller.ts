@@ -2,6 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { AddressesResponseDto } from './dto/address.response.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';
 
 /**
  * Controller responsible for managing wallet address operations.
@@ -33,12 +34,15 @@ export class AddressController {
       'Get the external and internal addresses associated with a descriptor',
   })
   @ApiResponse({ status: 200, type: AddressesResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getAddresses(
-    @Query('descriptor') descriptor: string,
+    @Query() descriptorRequestDto: DescriptorRequestDto,
   ): Promise<AddressesResponseDto> {
     try {
-      return await this.addressService.getAddresses(descriptor);
+      return await this.addressService.getAddresses(
+        descriptorRequestDto.descriptor,
+      );
     } catch (error) {
       throw error;
     }

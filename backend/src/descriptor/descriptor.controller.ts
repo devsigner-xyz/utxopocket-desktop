@@ -7,13 +7,15 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { DescriptorService } from './descriptor.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoadWalletResponseDto } from './dto/load-wallet.response.dto';
 import { LoadWalletRequestDto } from './dto/load-wallet.request.dto';
 import { SupportedDescriptorTypesResponseDto } from './dto/supported-descriptor-types.response.dto';
 import { DescriptorType } from './enum/descryptor-type.enum';
 import { ValidateDescriptorResponseDto } from './dto/validate-descriptor.response.dto';
 import { Descriptor } from './descriptor.value-object';
+import { ValidateDescriptorRequestDto } from './dto/validate-descriptor.request.dto';
+import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';
 
 /**
  * Controller responsible for managing wallet descriptor operations.
@@ -42,6 +44,7 @@ export class DescriptorController {
   @Post('load')
   @ApiOperation({ summary: 'Load a wallet associated with a descriptor' })
   @ApiResponse({ status: 200, type: LoadWalletResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async loadWallet(
     @Body() loadWalletRequestDto: LoadWalletRequestDto,
@@ -91,14 +94,16 @@ export class DescriptorController {
   @Post('validate')
   @ApiOperation({ summary: 'Validate a wallet descriptor' })
   @ApiResponse({ status: 200, type: ValidateDescriptorResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async validateDescriptor(@Body('descriptor') baseDescriptor: string) {
+  async validateDescriptor(@Body() descriptorRequestDto: DescriptorRequestDto) {
     try {
-      const descriptor = Descriptor.create(baseDescriptor);
-      const descriptorType = descriptor.type;
+      const descriptor = Descriptor.create(descriptorRequestDto.descriptor);
+      const { name, type } = descriptor;
       return {
         isValid: true,
-        type: descriptorType,
+        type,
+        name,
       };
     } catch (error) {
       return {

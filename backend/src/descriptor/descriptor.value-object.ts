@@ -5,10 +5,10 @@ import { InvalidDescriptorException } from './exception/invalid-descriptor.excep
 import { UtilsService } from '@common/utils/utils.service';
 
 export class Descriptor {
-  /**
-   * Defines valid descriptor patterns and their corresponding types.
-   */
-  private readonly validPatterns = [
+  readonly name: string;
+  readonly type: DescriptorType;
+
+  private readonly validTypes = [
     { regex: /^pk\(/, type: DescriptorType.PK, name: 'Pay-to-PubKey (P2PK)' },
     {
       regex: /^pkh\(/,
@@ -28,27 +28,23 @@ export class Descriptor {
   ];
 
   private constructor(readonly value: string) {
-    try {
-      // Compile the descriptor to ensure it's syntactically correct
-      compileMiniscript(value);
-
-      // Check if the descriptor matches any of the supported patterns
-      const isValid = this.validPatterns.some((pattern) =>
-        pattern.regex.test(value),
-      );
-      if (!isValid) {
-        throw new UnsupportedDescriptorException(value);
-      }
-    } catch (err) {
+    // Compile the descriptor to ensure it's syntactically correct
+    const { issane, asm } = compileMiniscript(value);
+    // FIXME: compileMiniscript('wpkh(tpubDDgQXbX4Q3WVcn3gMQAXP5w5NutmdgMKLukSLyDfD88PNpZr4MbgewQP1oDCMhWaVpbPAHF1RHusPBKuzo1TV2aUbTdhhTs5PmrEzSAUV9e)')
+    // returns issane false, but it's a valid descriptor
+    /*if (!issane) {
       throw new InvalidDescriptorException(value);
-    }
-  }
+    }*/
 
-  get type(): string {
-    const found = this.validPatterns.find((pattern) =>
-      pattern.regex.test(this.value),
+    // Check if the descriptor matches any of the supported patterns
+    const foundType = this.validTypes.find((pattern) =>
+      pattern.regex.test(value),
     );
-    return found.name;
+    if (!foundType) {
+      throw new UnsupportedDescriptorException(value);
+    }
+    this.type = foundType.type;
+    this.name = foundType.name;
   }
 
   static create(descriptor: string): Descriptor {
