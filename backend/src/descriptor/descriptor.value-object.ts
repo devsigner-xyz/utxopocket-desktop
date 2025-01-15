@@ -1,7 +1,5 @@
-import { compileMiniscript } from '@bitcoinerlab/miniscript';
 import { DescriptorType } from './enum/descryptor-type.enum';
 import { UnsupportedDescriptorException } from './exception/unsupported-descriptor.exception';
-import { InvalidDescriptorException } from './exception/invalid-descriptor.exception';
 import { UtilsService } from '@common/utils/utils.service';
 
 export class Descriptor {
@@ -29,8 +27,8 @@ export class Descriptor {
 
   private constructor(readonly value: string) {
     // Compile the descriptor to ensure it's syntactically correct
-    const { issane, asm } = compileMiniscript(value);
     // FIXME: compileMiniscript('wpkh(tpubDDgQXbX4Q3WVcn3gMQAXP5w5NutmdgMKLukSLyDfD88PNpZr4MbgewQP1oDCMhWaVpbPAHF1RHusPBKuzo1TV2aUbTdhhTs5PmrEzSAUV9e)')
+    // const { issane, asm } = compileMiniscript(value);
     // returns issane false, but it's a valid descriptor
     /*if (!issane) {
       throw new InvalidDescriptorException(value);

@@ -1,8 +1,6 @@
 import { NodeService } from '@node/node.service';
 import { DiscoveryService } from '@discovery/discovery.service';
 import mock, { MockProxy } from 'jest-mock-extended/lib/Mock';
-import { Descriptor } from '@descriptor/descriptor.value-object';
-import { DiscoveryInstance } from '@bitcoinerlab/discovery';
 import { TransactionService } from './transaction.service';
 import { LogService } from '@common/log/log.service';
 import { DescriptorService } from '@descriptor/descriptor.service';

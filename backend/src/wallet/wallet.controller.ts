@@ -11,7 +11,6 @@ import { WalletService } from '@wallet/wallet.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { WalletResponseDto } from './dto/wallet.response.dto';
 import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';
-import { validate } from 'class-validator';
 
 /**
  * Controller responsible for handling wallet-related HTTP requests.

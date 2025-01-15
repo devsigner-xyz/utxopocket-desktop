@@ -1,6 +1,3 @@
-import mock, { MockProxy } from 'jest-mock-extended/lib/Mock';
-import { WalletService } from '../../wallet/wallet.service';
-import { WalletController } from '../../wallet/wallet.controller';
 import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';

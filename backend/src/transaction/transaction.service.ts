@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TxAttribution } from '@bitcoinerlab/discovery';
 import { Transaction, address } from 'bitcoinjs-lib';
 import { NodeService } from '@node/node.service';
@@ -340,7 +340,6 @@ export class TransactionService {
         offset += 32;
 
         // Vout (4 bytes)
-        const voutBytes = txBuffer.slice(offset, offset + 4);
         const vout = txBuffer.readUInt32LE(offset);
         offset += 4;
 
@@ -356,7 +355,6 @@ export class TransactionService {
         offset += scriptLength;
 
         // Sequence (4 bytes)
-        const sequenceBytes = txBuffer.slice(offset, offset + 4);
         const sequence = txBuffer.readUInt32LE(offset);
         offset += 4;
 

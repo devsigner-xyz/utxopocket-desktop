@@ -1,11 +1,8 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
-import { compileMiniscript } from '@bitcoinerlab/miniscript';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Network } from 'bitcoinjs-lib';
 import { NodeService } from '@node/node.service';
 import { DiscoveryService } from '@discovery/discovery.service';
-import { UtilsService } from '@common/utils/utils.service';
-import { DescriptorType } from './enum/descryptor-type.enum';
 import { Descriptor } from './descriptor.value-object';
 
 /**

@@ -7,14 +7,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { DescriptorService } from './descriptor.service';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoadWalletResponseDto } from './dto/load-wallet.response.dto';
 import { LoadWalletRequestDto } from './dto/load-wallet.request.dto';
 import { SupportedDescriptorTypesResponseDto } from './dto/supported-descriptor-types.response.dto';
 import { DescriptorType } from './enum/descryptor-type.enum';
 import { ValidateDescriptorResponseDto } from './dto/validate-descriptor.response.dto';
 import { Descriptor } from './descriptor.value-object';
-import { ValidateDescriptorRequestDto } from './dto/validate-descriptor.request.dto';
 import { DescriptorRequestDto } from '@common/dto/descriptor.request.dto';
 
 /**
@@ -50,7 +49,7 @@ export class DescriptorController {
     @Body() loadWalletRequestDto: LoadWalletRequestDto,
   ): Promise<LoadWalletResponseDto> {
     try {
-      const result = await this.descriptorService.loadWallet(
+      await this.descriptorService.loadWallet(
         loadWalletRequestDto.descriptor,
         loadWalletRequestDto.gapLimit,
       );
