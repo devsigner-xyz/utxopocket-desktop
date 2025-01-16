@@ -119,7 +119,6 @@ describe('BlockService', () => {
     });
 
     it('should retrieve block header if blockTime not present', async () => {
-      // Extend interface so TS accepts "client"
       const mockExplorer: Partial<ElectrumExplorer & { client?: any }> = {
         connect: jest.fn(),
         close: jest.fn(),

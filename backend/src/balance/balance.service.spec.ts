@@ -1,5 +1,4 @@
 import { NodeService } from '@node/node.service';
-import { Cache } from '@nestjs/cache-manager';
 import { DiscoveryService } from '@discovery/discovery.service';
 import mock, { MockProxy } from 'jest-mock-extended/lib/Mock';
 import { BalanceService } from './balance.service';
@@ -36,12 +35,10 @@ describe('BalanceService', () => {
       expect(discoveryService.getDiscoveryInstance).toHaveBeenCalledWith(
         descriptor,
       );
-      const { externalDescriptor, internalDescriptor } = descriptor.deriveDescriptors();
+      const { externalDescriptor, internalDescriptor } =
+        descriptor.deriveDescriptors();
       expect(mockDiscovery.getBalance).toHaveBeenCalledWith({
-        descriptors: [
-          externalDescriptor,
-          internalDescriptor
-        ],
+        descriptors: [externalDescriptor, internalDescriptor],
       });
     });
   });
