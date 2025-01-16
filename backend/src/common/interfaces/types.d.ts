@@ -22,6 +22,7 @@ export interface TxOutput {
 export interface Transaction {
   txid: string;
   version: number;
+  fee: number;
   locktime: number;
   size: number;
   weight: number;

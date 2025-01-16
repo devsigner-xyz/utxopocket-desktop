@@ -4,7 +4,9 @@ import { BalanceService } from '@balance/balance.service';
 import { UtxoService } from '@utxo/utxo.service';
 import { TransactionService } from '@transaction/transaction.service';
 import { MockProxy, mock } from 'jest-mock-extended';
-import { UTXO } from '@common/interfaces/types';
+import { TransactionBuilder } from '../../test/builder/transaction.builder';
+import { UtxoBuilder } from '../../test/builder/utxo.builder';
+import { WalletBuilder } from '../../test/builder/wallet.builder';
 
 describe('WalletService', () => {
   let walletService: WalletService;
@@ -28,59 +30,37 @@ describe('WalletService', () => {
   });
 
   describe('getWalletInfo', () => {
+    it('should throw an error when error retrieving wallet balance', async () => {
+      const descriptor = 'pk(A)';
+      balanceService.getBalance.mockRejectedValue(new Error('test'));
+      await expect(walletService.getWalletInfo(descriptor)).rejects.toThrow(
+        new Error('Failed to retrieve wallet information: test'),
+      );
+    });
+
     it('should return wallet info successfully', async () => {
       const descriptor = 'pk(A)';
-      const mockBalance = 100;
+      const wallet = WalletBuilder.create()
+        .withBalance(100)
+        .withUtxos([UtxoBuilder.create('utxo1').build()])
+        .withTransactions([TransactionBuilder.create('txid1').build()])
+        .withExternalAddresses(['address1'])
+        .withInternalAddresses(['address2'])
+        .build();
 
-      const mockUtxos: UTXO[] = [
-        {
-          txid: 'txid1',
-          vout: 0,
-          value: 5000,
-          scriptPubKey: '76a91489abcdefabbaabbaabbaabbaabbaabbaabba88ac',
-          address: 'tb1qaddress1',
-          height: 150000,
-          timestamp: 1633024800,
-          locked: false,
-          isReused: false,
-          isUtxoChange: false,
-        },
-      ];
-
-      const mockTransactions = [
-        {
-          txid: 'txid1',
-          fee: 100,
-          inputs: [],
-          outputs: [],
-          version: 2,
-          locktime: 0,
-          size: 200,
-          weight: 800,
-        },
-      ];
-
-      const mockAddresses = {
-        externalAddresses: ['address1'],
-        internalAddresses: ['address2'],
-      };
-
-      balanceService.getBalance.mockResolvedValue({ balance: mockBalance });
-      utxoService.getUtxos.mockResolvedValue({ utxos: mockUtxos });
+      balanceService.getBalance.mockResolvedValue({ balance: wallet.balance });
+      utxoService.getUtxos.mockResolvedValue({ utxos: wallet.utxos });
       transactionService.getTransactionHistory.mockResolvedValue({
-        transactions: mockTransactions,
+        transactions: wallet.transactions,
       });
-      addressService.getAddresses.mockResolvedValue(mockAddresses);
-
-      const walletInfo = await walletService.getWalletInfo(descriptor);
-
-      expect(walletInfo).toEqual({
-        balance: mockBalance,
-        utxos: mockUtxos,
-        transactions: mockTransactions,
-        externalAddresses: mockAddresses.externalAddresses,
-        internalAddresses: mockAddresses.internalAddresses,
+      addressService.getAddresses.mockResolvedValue({
+        externalAddresses: wallet.externalAddresses,
+        internalAddresses: wallet.internalAddresses,
       });
+
+      const response = await walletService.getWalletInfo(descriptor);
+
+      expect(response).toEqual(wallet);
     });
   });
 });
