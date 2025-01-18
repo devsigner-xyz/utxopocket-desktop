@@ -3,6 +3,7 @@ import { BalanceService } from '@balance/balance.service';
 import { UtxoService } from '@utxo/utxo.service';
 import { TransactionService } from '@transaction/transaction.service';
 import { AddressService } from '@address/address.service';
+import { WalletDto } from './dto/wallet.dto';
 
 /**
  * Service responsible for aggregating comprehensive wallet information.
@@ -39,13 +40,7 @@ export class WalletService {
    *
    * @throws {Error} Throws an error if any of the underlying services fail to retrieve their respective data.
    */
-  async getWalletInfo(descriptor: string): Promise<{
-    balance: number;
-    utxos: any[];
-    transactions: any[];
-    externalAddresses: string[];
-    internalAddresses: string[];
-  }> {
+  async getWalletInfo(descriptor: string): Promise<WalletDto> {
     try {
       // Concurrently fetch balance, UTXOs, transactions, and addresses
       const [balanceResult, utxosResult, transactionsResult, addressesResult] =
