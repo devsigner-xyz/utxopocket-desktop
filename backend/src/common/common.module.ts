@@ -8,4 +8,4 @@ import { LogService } from '@log/log.service';
   providers: [LogService],
   exports: [LogService],
 })
-export class WalletGlobalModule {}
+export class CommonModule {}
