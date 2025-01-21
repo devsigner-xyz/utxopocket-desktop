@@ -21,5 +21,7 @@ module.exports = {
     '^@utxo/(.*)$': '<rootDir>/utxo/$1',
     '^@address/(.*)$': '<rootDir>/address/$1',
     '^@wallet/(.*)$': '<rootDir>/wallet/$1',
-  }
+    '^@block/(.*)$': '<rootDir>/block/$1',
+    '^@log/(.*)$': '<rootDir>/common/log/$1',
+  },
 };

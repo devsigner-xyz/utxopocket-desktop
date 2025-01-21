@@ -1,4 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Query,
+} from '@nestjs/common';
 import { BalanceService } from '@balance/balance.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BalanceResponseDto } from './dto/balance.response.dto';
@@ -43,7 +49,10 @@ export class BalanceController {
         descriptorRequestDto.descriptor,
       );
     } catch (error) {
-      throw error;
+      throw new HttpException(
+        error.message || 'Failed to retrieve wallet information',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
