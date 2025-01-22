@@ -333,13 +333,11 @@ const graphOption = computed(() => {
     });
   });
 
-  const fee = settingsStore.formatSats(selectedTransaction.value.fee);
-
   nodes.push({
     id: 'Fee',
     name: `<b>Fee</b>`,
     symbolSize: 20,
-    value: fee,
+    value: selectedTransaction.value.fee,
     itemStyle: {
       color: theme.global.current.value.colors['surface-2'],
     },
@@ -359,7 +357,7 @@ const graphOption = computed(() => {
   links.push({
     source: selectedTransaction.value.txId,
     target: 'Fee',
-    value: fee,
+    value: selectedTransaction.value.fee,
     lineStyle: {
       color: theme.global.current.value.colors['surface-2'],
       width: 2,
